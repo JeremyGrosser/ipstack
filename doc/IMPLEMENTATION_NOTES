@@ -1,0 +1,31 @@
+IPstack implementation notes
+============================
+
+1. Concepts and terminology
+---------------------------
+
+1.1. Buffers, packets and segments
+----------------------------------
+
+Buffers are descriptors for chunks of memory managed by IPstack. Some buffers
+("data" buffers) have an associated reserved storage page within IPstack.
+Other buffers ("ref" buffers) just point to a memory area provided by the
+user.
+
+Buffers may be chained to represent a transmission unit formed by the
+concatenation of their contents. Such a chain of buffers is called a "packet".
+A packet is the layer 3 (Network layer, IP) PDU.
+
+Layer 4 (Transport layer, UDP and TCP) use packets to transport their own
+PDUs. The UDP PDU is a "datagram"; the TCP PDU is a "segment": a segment
+is therefore just a packet as seen by TCP. The data structure AIP.TCP.Segment
+describes the TCP-specific aspects of a received segment, as determined from
+the TCP header contained in the packet as well as the state of the
+corresponding TCP connection.
+
+Packets can also be attached to chained lists by the layer 2 (Link layer,
+Ethernet) or layer 4 protocols. This is provisioned for by reserving two
+chaining pointers in each buffer. Lists of packets are then constituted
+by linking together each packet's initial buffer. The resulting lists
+are called "packet queues". At any given time, a given packet can be chained
+on only one list for each layer.
