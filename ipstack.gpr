@@ -1,0 +1,40 @@
+with "config/ipstack_config.gpr";
+project Ipstack is
+
+   for Library_Name use "Ipstack";
+   for Library_Version use Project'Library_Name & ".so." & Ipstack_Config.Crate_Version;
+
+   for Languages use ("C", "Ada");
+
+   for Source_Dirs use
+      ("build/gen/",
+       "src/include/",
+       "src/support/",
+       "src/support.rp2040/",
+       "src/core/",
+       "config/");
+
+   for Object_Dir use "obj/" & Ipstack_Config.Build_Profile;
+   for Create_Missing_Dirs use "True";
+   for Library_Dir use "lib";
+
+   type Library_Type_Type is ("relocatable", "static", "static-pic");
+   Library_Type : Library_Type_Type :=
+     external ("IPSTACK_LIBRARY_TYPE", external ("LIBRARY_TYPE", "static"));
+   for Library_Kind use Library_Type;
+
+   package Compiler is
+      for Default_Switches ("Ada") use Ipstack_Config.Ada_Compiler_Switches &
+         ("-gnatyM120");
+      for Local_Configuration_Pragmas use Project'Project_Dir & "projects/ipstack.adc";
+   end Compiler;
+
+   package Binder is
+      for Switches ("Ada") use ("-Es"); --  Symbolic traceback
+   end Binder;
+
+   package Install is
+      for Artifacts (".") use ("share");
+   end Install;
+
+end Ipstack;

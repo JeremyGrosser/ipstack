@@ -1,0 +1,13 @@
+name = "ipstack"
+description = "Shiny new project"
+version = "0.1.0-dev"
+
+authors = ["Jeremy Grosser"]
+maintainers = ["Jeremy Grosser <jeremy@synack.me>"]
+maintainers-logins = ["JeremyGrosser"]
+
+[configuration.variables]
+Support_Target = {type = "Enum", values = ["native", "powerpc_elf", "rp2040"], default = "native"}
+
+[[depends-on]]
+rp2040_hal = ">=1.6.0"
