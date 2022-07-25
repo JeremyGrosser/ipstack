@@ -25,8 +25,12 @@ project Ipstack is
 
    package Compiler is
       for Default_Switches ("Ada") use Ipstack_Config.Ada_Compiler_Switches &
-         ("-gnatyM120");
+         ("-gnatyM180");
       for Local_Configuration_Pragmas use Project'Project_Dir & "projects/ipstack.adc";
+
+      for Default_Switches ("C") use
+         ("-Wall",
+          "-g");
    end Compiler;
 
    package Binder is
