@@ -114,6 +114,9 @@ typedef struct netif {
   IPTR_T Dev;
 } Netif;
 
+extern void
+AIP_allocate_netif (EID *Nid);
+
 extern struct netif *
 AIP_get_netif (EID Nid);
 
